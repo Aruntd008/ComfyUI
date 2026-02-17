@@ -1,0 +1,68 @@
+{
+    "comfyui": null,
+    "git_custom_nodes": {
+        "https://github.com/ltdrdata/ComfyUI-Manager.git": {
+            "hash": "f41365abe95723d078ce2946e82dfb7bc6e9d9c7",
+            "disabled": false
+        },
+        "https://github.com/Aruntd008/comfyui_document_scanner.git": {
+            "hash": "e442f39a03fe6f953abd5e47a707589f713cac57",
+            "disabled": false
+        },
+        "https://github.com/Aruntd008/ComfyUI_SeamlessPattern.git": {
+            "hash": "5426c2e5a8ab6b5204fa14f0ab166b721e64a289",
+            "disabled": false
+        },
+        "https://github.com/Aruntd008/ComfyUI_blender_render.git": {
+            "hash": "ebe30eefa681b39a4847c572fdca57a35cdf440c",
+            "disabled": false
+        },
+        "https://github.com/shiimizu/ComfyUI-TiledDiffusion": {
+            "hash": "a155b1bac39147381aeaa52b9be42e545626a44f",
+            "disabled": false
+        },
+        "https://github.com/kaibioinfo/ComfyUI_AdvancedRefluxControl": {
+            "hash": "2b95c2c866399ca1914b4da486fe52808f7a9c60",
+            "disabled": false
+        },
+        "https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes": {
+            "hash": "d78b780ae43fcf8c6b7c6505e6ffb4584281ceca",
+            "disabled": false
+        },
+        "https://github.com/yolain/ComfyUI-Easy-Use": {
+            "hash": "b11c63487243d183a967261bdf019c5afcec2cf7",
+            "disabled": false
+        },
+        "https://github.com/lquesada/ComfyUI-Inpaint-CropAndStitch": {
+            "hash": "3253768f7933ad65fe41cb68b5450dce72fcaa40",
+            "disabled": false
+        },
+        "https://github.com/kijai/ComfyUI-KJNodes": {
+            "hash": "9086a8dfb6657937b8fc0501aad6b903244bd2a7",
+            "disabled": false
+        },
+        "https://github.com/1038lab/ComfyUI-RMBG": {
+            "hash": "d7402513f23f58db7d56754b02a4f51a148b4941",
+            "disabled": false
+        },
+        "https://github.com/chflame163/ComfyUI_LayerStyle": {
+            "hash": "d94bef1ee5ed3656f5ff1bb2830a4ffd94f40935",
+            "disabled": false
+        },
+        "https://github.com/cubiq/ComfyUI_essentials": {
+            "hash": "9d9f4bedfc9f0321c19faf71855e228c93bd0dc9",
+            "disabled": false
+        }
+    },
+    "cnr_custom_nodes": {
+        "rgthree-comfy": "1.0.2512112053",
+        "was-node-suite-comfyui": "1.0.2"
+    },
+    "file_custom_nodes": [
+        {
+            "filename": "websocket_image_save.py",
+            "disabled": false
+        }
+    ],
+    "pips": null
+}

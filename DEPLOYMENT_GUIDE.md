@@ -198,7 +198,6 @@ git clone https://github.com/cubiq/ComfyUI_essentials custom_nodes/ComfyUI_essen
 ``` 
 
 ---
-<!-- 
 
 
 ## Phase 3: Bake Node Dependencies into `pyproject.toml`
@@ -210,26 +209,7 @@ This ensures `uv.lock` contains ALL dependencies (ComfyUI + every node).
 Run this from the ComfyUI root. It processes each node one at a time:
 
 ```bash
-for dir in custom_nodes/*/; do
-    req="$dir/requirements.txt"
-    [ ! -f "$req" ] && continue
-    node=$(basename "$dir")
-    [ "$node" = "__pycache__" ] && continue
-
-    echo ""
-    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-    echo "Node: $node"
-    echo "Contents:"
-    grep -v '^\s*$\|^\s*#' "$req" | sed 's/^/  /'
-    echo ""
-    read -p "[a]dd / [s]kip / [q]uit? " choice
-
-    case "$choice" in
-        a|A) uv add -r "$req" || echo "⚠ FAILED — fix manually with: uv add <pkg>" ;;
-        s|S) echo "Skipped" ;;
-        q|Q) break ;;
-    esac
-done
+bash bake_deps.sh
 ```
 
 > **On failure**: Run `uv add <package>` individually to debug which package is the problem. You can modify version constraints or skip packages that conflict.
@@ -240,7 +220,7 @@ done
 
 ```bash
 # Save custom node snapshot (records git URLs + commit hashes)
-python custom_nodes/comfyui-manager/cm-cli.py save-snapshot --output snapshot.json
+python custom_nodes/comfyui-manager/cm-cli.py save-snapshot --no-full-snapshot --output snapshot.json
 
 # Stage everything
 git add -f uv.lock
@@ -254,6 +234,11 @@ git push -u origin main
 ```
 
 ---
+
+<!-- 
+
+
+
 
 ## Phase 5: RunPod Deployment
 
