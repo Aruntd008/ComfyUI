@@ -29,8 +29,119 @@ git remote add upstream https://github.com/Comfy-Org/ComfyUI.git
 uv python pin 3.11
 uv venv
 source .venv/bin/activate
-uv sync
+```
 
+Updated pyproject.toml (CUDA 13 / Blackwell Ready)
+
+Replace your file with this:
+```toml
+[project]
+name = "ComfyUI"
+version = "0.14.0"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = "==3.11.*"
+
+dependencies = [
+    # --- Core ML stack (CUDA 13 / Blackwell compatible) ---
+    "torch>=2.7.0",
+    "torchvision",
+    "torchaudio",
+
+    # Optional performance (can remove if lock fails)
+    "xformers",
+
+    # HF stack aligned with modern ComfyUI
+    "transformers>=5.0.0",
+
+    # Common runtime deps some nodes expect
+    "setuptools",
+    "opencv-contrib-python",
+]
+
+[project.urls]
+homepage = "https://www.comfy.org/"
+repository = "https://github.com/comfyanonymous/ComfyUI"
+documentation = "https://docs.comfy.org/"
+
+# ---- CUDA 13 index ----
+[[tool.uv.index]]
+name = "pytorch-cu130"
+url = "https://download.pytorch.org/whl/cu130"
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu130" }
+torchvision = { index = "pytorch-cu130" }
+torchaudio = { index = "pytorch-cu130" }
+xformers = { index = "pytorch-cu130" }
+
+# ---- Lint config unchanged ----
+[tool.ruff]
+lint.select = [
+  "N805",
+  "S307",
+  "S102",
+  "E",
+  "T",
+  "W",
+  "F",
+]
+
+lint.ignore = ["E501", "E722", "E731", "E712", "E402", "E741"]
+exclude = ["*.ipynb", "**/generated/*.pyi"]
+
+[tool.pylint]
+master.py-version = "3.11"
+master.extension-pkg-allow-list = [
+  "pydantic",
+]
+reports.output-format = "colorized"
+similarities.ignore-imports = "yes"
+messages_control.disable = [
+  "missing-module-docstring",
+  "missing-class-docstring",
+  "missing-function-docstring",
+  "line-too-long",
+  "too-few-public-methods",
+  "too-many-public-methods",
+  "too-many-instance-attributes",
+  "too-many-positional-arguments",
+  "broad-exception-raised",
+  "too-many-lines",
+  "invalid-name",
+  "unused-argument",
+  "broad-exception-caught",
+  "consider-using-with",
+  "fixme",
+  "too-many-statements",
+  "too-many-branches",
+  "too-many-locals",
+  "too-many-arguments",
+  "too-many-return-statements",
+  "too-many-nested-blocks",
+  "duplicate-code",
+  "abstract-method",
+  "superfluous-parens",
+  "arguments-differ",
+  "redefined-builtin",
+  "unnecessary-lambda",
+  "dangerous-default-value",
+  "invalid-overridden-method",
+  "bad-classmethod-argument",
+  "wrong-import-order",
+  "ungrouped-imports",
+  "unnecessary-pass",
+  "unnecessary-lambda-assignment",
+  "no-else-return",
+  "unused-variable",
+]
+```
+
+```bash
+uv lock
+uv sync --frozen
+```
+<!-- 
 # Install ComfyUI Manager
 git clone https://github.com/ltdrdata/ComfyUI-Manager.git custom_nodes/comfyui-manager
 
@@ -153,4 +264,4 @@ python custom_nodes/comfyui-manager/cm-cli.py save-snapshot --output snapshot.js
 git add -f uv.lock snapshot.json pyproject.toml
 git commit -m "Add <new-node>"
 git push
-```
+``` -->

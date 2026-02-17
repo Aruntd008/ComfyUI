@@ -3,13 +3,42 @@ name = "ComfyUI"
 version = "0.14.0"
 readme = "README.md"
 license = { file = "LICENSE" }
-requires-python = ">=3.10"
+requires-python = "==3.11.*"
+
+dependencies = [
+    # --- Core ML stack (CUDA 13 / Blackwell compatible) ---
+    "torch>=2.7.0",
+    "torchvision",
+    "torchaudio",
+
+    # Optional performance (can remove if lock fails)
+    "xformers",
+
+    # HF stack aligned with modern ComfyUI
+    "transformers>=5.0.0",
+
+    # Common runtime deps some nodes expect
+    "setuptools",
+    "opencv-contrib-python",
+]
 
 [project.urls]
 homepage = "https://www.comfy.org/"
 repository = "https://github.com/comfyanonymous/ComfyUI"
 documentation = "https://docs.comfy.org/"
 
+# ---- CUDA 13 index ----
+[[tool.uv.index]]
+name = "pytorch-cu130"
+url = "https://download.pytorch.org/whl/cu130"
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu130" }
+torchvision = { index = "pytorch-cu130" }
+torchaudio = { index = "pytorch-cu130" }
+xformers = { index = "pytorch-cu130" }
+
+# ---- Lint config unchanged ----
 [tool.ruff]
 lint.select = [
   "N805", # invalid-first-argument-name-for-method
@@ -28,7 +57,7 @@ lint.ignore = ["E501", "E722", "E731", "E712", "E402", "E741"]
 exclude = ["*.ipynb", "**/generated/*.pyi"]
 
 [tool.pylint]
-master.py-version = "3.10"
+master.py-version = "3.11"
 master.extension-pkg-allow-list = [
   "pydantic",
 ]
