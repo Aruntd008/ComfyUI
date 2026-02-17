@@ -180,21 +180,18 @@ python ./comfyui-manager/cm-cli.py install \
   was-node-suite-comfyui \
   --no-deps
 
-
-python ./comfyui-manager/cm-cli.py install ComfyUI-Easy-Use@1.3.6 --no-deps
-python ./comfyui-manager/cm-cli.py install ComfyUI-Inpaint-CropAndStitch@3.0.7 --no-deps
-python ./comfyui-manager/cm-cli.py install ComfyUI-KJNodes@1.2.9 --no-deps
-python ./comfyui-manager/cm-cli.py install ComfyUI-RMBG@3.0.0 --no-deps
-python ./comfyui-manager/cm-cli.py install ComfyUI_LayerStyle@1.0.90 --no-deps
-python ./comfyui-manager/cm-cli.py install ComfyUI_essentials@1.1.0 --no-deps
-
 cd ~/Projects/ComfyUI
 git clone https://github.com/yolain/ComfyUI-Easy-Use custom_nodes/ComfyUI-Easy-Use
 git clone https://github.com/lquesada/ComfyUI-Inpaint-CropAndStitch custom_nodes/ComfyUI-Inpaint-CropAndStitch
 git clone https://github.com/kijai/ComfyUI-KJNodes custom_nodes/ComfyUI-KJNodes
 git clone https://github.com/1038lab/ComfyUI-RMBG custom_nodes/ComfyUI-RMBG
+git clone https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes.git custom_nodes/ComfyUI_Comfyroll_CustomNodes
+git clone https://github.com/kaibioinfo/ComfyUI_AdvancedRefluxControl.git custom_nodes/ComfyUI_AdvancedRefluxControl
+git clone https://github.com/shiimizu/ComfyUI-TiledDiffusion.git custom_nodes/ComfyUI-TiledDiffusion
 git clone https://github.com/chflame163/ComfyUI_LayerStyle custom_nodes/ComfyUI_LayerStyle
 git clone https://github.com/cubiq/ComfyUI_essentials custom_nodes/ComfyUI_essentials
+git clone https://github.com/rgthree/rgthree-comfy.git custom_nodes/rgthree-comfy
+git clone https://github.com/WASasquatch/was-node-suite-comfyui.git custom_nodes/was-node-suite-comfyui
 ``` 
 
 ---
@@ -230,7 +227,7 @@ git add snapshot.json pyproject.toml
 git commit -m "Add snapshot and baked dependencies"
 
 # Push to your fork
-git push -u origin main
+git push -u origin master
 ```
 
 ---
