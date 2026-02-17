@@ -140,6 +140,7 @@ messages_control.disable = [
 ```bash
 uv lock
 uv sync --frozen
+git add -f uv.lock
 ```
 <!-- 
 # Install ComfyUI Manager
