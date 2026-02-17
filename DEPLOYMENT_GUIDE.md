@@ -158,10 +158,48 @@ uv lock && uv sync --frozen
 ```bash
 uv run python main.py
 ```
-<!-- 
-Now use the **Manager GUI** to install all your custom nodes.
+
+# Clone all your custom nodes.
+```bash
+cd custom_nodes
+git clone https://github.com/Aruntd008/comfyui_document_scanner.git
+git clone https://github.com/Aruntd008/ComfyUI_SeamlessPattern.git
+git clone https://github.com/Aruntd008/ComfyUI_blender_render.git
+
+python ./comfyui-manager/cm-cli.py install \
+  ComfyUI-Easy-Use \
+  ComfyUI-Inpaint-CropAndStitch \
+  ComfyUI-KJNodes \
+  ComfyUI-RMBG \
+  ComfyUI-TiledDiffusion \
+  ComfyUI_AdvancedRefluxControl \
+  ComfyUI_Comfyroll_CustomNodes \
+  ComfyUI_LayerStyle \
+  ComfyUI_essentials \
+  rgthree-comfy \
+  was-node-suite-comfyui \
+  --no-deps
+
+
+python ./comfyui-manager/cm-cli.py install ComfyUI-Easy-Use@1.3.6 --no-deps
+python ./comfyui-manager/cm-cli.py install ComfyUI-Inpaint-CropAndStitch@3.0.7 --no-deps
+python ./comfyui-manager/cm-cli.py install ComfyUI-KJNodes@1.2.9 --no-deps
+python ./comfyui-manager/cm-cli.py install ComfyUI-RMBG@3.0.0 --no-deps
+python ./comfyui-manager/cm-cli.py install ComfyUI_LayerStyle@1.0.90 --no-deps
+python ./comfyui-manager/cm-cli.py install ComfyUI_essentials@1.1.0 --no-deps
+
+cd ~/Projects/ComfyUI
+git clone https://github.com/yolain/ComfyUI-Easy-Use custom_nodes/ComfyUI-Easy-Use
+git clone https://github.com/lquesada/ComfyUI-Inpaint-CropAndStitch custom_nodes/ComfyUI-Inpaint-CropAndStitch
+git clone https://github.com/kijai/ComfyUI-KJNodes custom_nodes/ComfyUI-KJNodes
+git clone https://github.com/1038lab/ComfyUI-RMBG custom_nodes/ComfyUI-RMBG
+git clone https://github.com/chflame163/ComfyUI_LayerStyle custom_nodes/ComfyUI_LayerStyle
+git clone https://github.com/cubiq/ComfyUI_essentials custom_nodes/ComfyUI_essentials
+``` 
 
 ---
+<!-- 
+
 
 ## Phase 3: Bake Node Dependencies into `pyproject.toml`
 
