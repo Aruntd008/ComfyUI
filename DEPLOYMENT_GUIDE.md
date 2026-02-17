@@ -141,15 +141,24 @@ messages_control.disable = [
 uv lock
 uv sync --frozen
 git add -f uv.lock
+
+uv add -r requirements.txt
+uv lock
+uv sync --frozen
 ```
-<!-- 
+
 # Install ComfyUI Manager
+```bash
 git clone https://github.com/ltdrdata/ComfyUI-Manager.git custom_nodes/comfyui-manager
+uv add -r ./custom_nodes/comfyui-manager/requirements.txt
+uv lock && uv sync --frozen
+```
 
 # Start ComfyUI
+```bash
 uv run python main.py
 ```
-
+<!-- 
 Now use the **Manager GUI** to install all your custom nodes.
 
 ---
@@ -265,4 +274,4 @@ python custom_nodes/comfyui-manager/cm-cli.py save-snapshot --output snapshot.js
 git add -f uv.lock snapshot.json pyproject.toml
 git commit -m "Add <new-node>"
 git push
-``` -->
+```  -->
