@@ -161,26 +161,12 @@ uv run python main.py
 
 # Clone all your custom nodes.
 ```bash
-cd custom_nodes
-git clone https://github.com/Aruntd008/comfyui_document_scanner.git
-git clone https://github.com/Aruntd008/ComfyUI_SeamlessPattern.git
-git clone https://github.com/Aruntd008/ComfyUI_blender_render.git
-
-python ./comfyui-manager/cm-cli.py install \
-  ComfyUI-Easy-Use \
-  ComfyUI-Inpaint-CropAndStitch \
-  ComfyUI-KJNodes \
-  ComfyUI-RMBG \
-  ComfyUI-TiledDiffusion \
-  ComfyUI_AdvancedRefluxControl \
-  ComfyUI_Comfyroll_CustomNodes \
-  ComfyUI_LayerStyle \
-  ComfyUI_essentials \
-  rgthree-comfy \
-  was-node-suite-comfyui \
-  --no-deps
 
 cd ~/Projects/ComfyUI
+git clone https://github.com/Aruntd008/comfyui_document_scanner.git custom_nodes/comfyui_document_scanner
+git clone https://github.com/Aruntd008/ComfyUI_SeamlessPattern.git custom_nodes/ComfyUI_SeamlessPattern
+git clone https://github.com/Aruntd008/ComfyUI_blender_render.git custom_nodes/ComfyUI_blender_render
+
 git clone https://github.com/yolain/ComfyUI-Easy-Use custom_nodes/ComfyUI-Easy-Use
 git clone https://github.com/lquesada/ComfyUI-Inpaint-CropAndStitch custom_nodes/ComfyUI-Inpaint-CropAndStitch
 git clone https://github.com/kijai/ComfyUI-KJNodes custom_nodes/ComfyUI-KJNodes

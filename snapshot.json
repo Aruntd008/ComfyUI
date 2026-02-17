@@ -48,6 +48,18 @@
         "https://github.com/ltdrdata/ComfyUI-Manager.git": {
             "hash": "f41365abe95723d078ce2946e82dfb7bc6e9d9c7",
             "disabled": false
+        },
+        "https://github.com/Aruntd008/comfyui_document_scanner.git": {
+            "hash": "e442f39a03fe6f953abd5e47a707589f713cac57",
+            "disabled": false
+        },
+        "https://github.com/Aruntd008/ComfyUI_SeamlessPattern.git": {
+            "hash": "5426c2e5a8ab6b5204fa14f0ab166b721e64a289",
+            "disabled": false
+        },
+        "https://github.com/Aruntd008/ComfyUI_blender_render.git": {
+            "hash": "ebe30eefa681b39a4847c572fdca57a35cdf440c",
+            "disabled": false
         }
     },
     "cnr_custom_nodes": {},
