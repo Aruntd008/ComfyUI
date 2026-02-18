@@ -31,7 +31,7 @@ uv venv
 source .venv/bin/activate
 ```
 
-Updated pyproject.toml (CUDA 13 / Blackwell Ready)
+Updated pyproject.toml (CUDA 12.8 / Blackwell Ready)
 
 Replace your file with this:
 ```toml
@@ -43,10 +43,10 @@ license = { file = "LICENSE" }
 requires-python = "==3.11.*"
 
 dependencies = [
-    # --- Core ML stack (CUDA 13 / Blackwell compatible) ---
-    "torch>=2.7.0",
-    "torchvision",
-    "torchaudio",
+    # --- Core ML stack (CUDA 12.8 / Blackwell compatible) ---
+    "torch==2.9.1",
+    "torchvision==0.24.1",
+    "torchaudio==2.9.1",
 
     # Optional performance (can remove if lock fails)
     "xformers",
@@ -64,16 +64,16 @@ homepage = "https://www.comfy.org/"
 repository = "https://github.com/comfyanonymous/ComfyUI"
 documentation = "https://docs.comfy.org/"
 
-# ---- CUDA 13 index ----
+# ---- CUDA 12.8 index ----
 [[tool.uv.index]]
-name = "pytorch-cu130"
-url = "https://download.pytorch.org/whl/cu130"
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
 
 [tool.uv.sources]
-torch = { index = "pytorch-cu130" }
-torchvision = { index = "pytorch-cu130" }
-torchaudio = { index = "pytorch-cu130" }
-xformers = { index = "pytorch-cu130" }
+torch = { index = "pytorch-cu128" }
+torchvision = { index = "pytorch-cu128" }
+torchaudio = { index = "pytorch-cu128" }
+xformers = { index = "pytorch-cu128" }
 
 # ---- Lint config unchanged ----
 [tool.ruff]

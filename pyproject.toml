@@ -6,10 +6,10 @@ license = { file = "LICENSE" }
 requires-python = "==3.11.*"
 
 dependencies = [
-  # --- Core ML stack (CUDA 13 / Blackwell compatible) ---
-  "torch>=2.7.0",
-  "torchvision",
-  "torchaudio",
+  # --- Core ML stack (CUDA 12.8 / Blackwell compatible) ---
+  "torch==2.9.1",
+  "torchvision==0.24.1",
+  "torchaudio==2.9.1",
   # Optional performance (can remove if lock fails)
   "xformers",
   # HF stack aligned with modern ComfyUI
@@ -51,7 +51,7 @@ dependencies = [
   "rich>=14.3.2",
   "typing-extensions>=4.15.0",
   "toml>=0.10.2",
-  "uv>=0.10.3",
+  "uv>=0.10.4",
   "chardet>=5.2.0",
   "diffusers>=0.18.0",
   "accelerate>=1.12.0",
@@ -99,16 +99,16 @@ homepage = "https://www.comfy.org/"
 repository = "https://github.com/comfyanonymous/ComfyUI"
 documentation = "https://docs.comfy.org/"
 
-# ---- CUDA 13 index ----
+# ---- CUDA 12.8 index ----
 [[tool.uv.index]]
-name = "pytorch-cu130"
-url = "https://download.pytorch.org/whl/cu130"
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
 
 [tool.uv.sources]
-torch = { index = "pytorch-cu130" }
-torchvision = { index = "pytorch-cu130" }
-torchaudio = { index = "pytorch-cu130" }
-xformers = { index = "pytorch-cu130" }
+torch = { index = "pytorch-cu128" }
+torchvision = { index = "pytorch-cu128" }
+torchaudio = { index = "pytorch-cu128" }
+xformers = { index = "pytorch-cu128" }
 img2texture = { git = "https://github.com/WASasquatch/img2texture.git" }
 cstr = { git = "https://github.com/WASasquatch/cstr" }
 ffmpy = { git = "https://github.com/WASasquatch/ffmpy.git" }
