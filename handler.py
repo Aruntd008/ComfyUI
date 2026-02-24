@@ -596,7 +596,10 @@ def handler(job):
         execution_done = False
         
         # --- Progress Tracking State ---
-        percent = 0.0
+        # The total number of nodes is derived from the workflow object keys.
+        # This closely matches how the ComfyUI frontend counts total nodes.
+        total_nodes = len(workflow.keys()) if isinstance(workflow, dict) else 1
+        executed_nodes = set()
         last_emit_time = 0.0
         
         while True:
@@ -605,20 +608,42 @@ def handler(job):
                 if isinstance(out, str):
                     message = json.loads(out)
                     msg_type = message.get("type")
+                    data = message.get("data", {})
                     
                     if msg_type == "status":
-                        status_data = message.get("data", {}).get("status", {})
+                        status_data = data.get("status", {})
                         print(
                             f"worker-comfyui - Status update: {status_data.get('exec_info', {}).get('queue_remaining', 'N/A')} items remaining in queue"
                         )
+                    
+                    elif msg_type == "execution_start":
+                        pass # Could use this to reset tracking if reusing
                         
-                    elif msg_type == "progress":
-                        data = message.get("data", {})
-                        if data.get("prompt_id") in (None, prompt_id):
-                            value = data.get("value", 0)
-                            maxv = data.get("max", 0) or 0
-                            if maxv > 0:
-                                percent = max(0.0, min(1.0, value / maxv))
+                    elif msg_type == "execution_cached":
+                        # Nodes loaded from cache count as executed immediately
+                        cached_nodes = data.get("nodes", [])
+                        if cached_nodes:
+                            for n in cached_nodes:
+                                executed_nodes.add(str(n))
+                                
+                            percent = min(1.0, len(executed_nodes) / max(1, total_nodes))
+                            now = time.time()
+                            if now - last_emit_time >= 0.25:
+                                last_emit_time = now
+                                try:
+                                    runpod.serverless.progress_update(
+                                        job,
+                                        {"status": "IN_PROGRESS", "progress": round(percent * 100, 2)}
+                                    )
+                                except Exception as e:
+                                    print(f"worker-comfyui - Error sending progress update: {e}")
+
+                    elif msg_type == "executed":
+                        # A single node finished successfully
+                        node_id = data.get("node")
+                        if node_id:
+                            executed_nodes.add(str(node_id))
+                            percent = min(1.0, len(executed_nodes) / max(1, total_nodes))
                             
                             now = time.time()
                             if now - last_emit_time >= 0.25:
@@ -630,7 +655,7 @@ def handler(job):
                                     )
                                 except Exception as e:
                                     print(f"worker-comfyui - Error sending progress update: {e}")
-                                    
+
                     elif msg_type == "executing":
                         data = message.get("data", {})
                         if (
