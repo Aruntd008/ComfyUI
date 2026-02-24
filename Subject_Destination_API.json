@@ -1,0 +1,986 @@
+{
+  "18": {
+    "inputs": {
+      "image": "scene_destination.png"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load destination (input)"
+    }
+  },
+  "19": {
+    "inputs": {
+      "width": [
+        "101",
+        0
+      ],
+      "height": [
+        "101",
+        1
+      ],
+      "position": "right-center",
+      "x_offset": 0,
+      "y_offset": 211,
+      "image": [
+        "100",
+        0
+      ]
+    },
+    "class_type": "ImageCrop+",
+    "_meta": {
+      "title": "🔧 Image Crop"
+    }
+  },
+  "22": {
+    "inputs": {
+      "image": [
+        "61",
+        0
+      ]
+    },
+    "class_type": "GetImageSize+",
+    "_meta": {
+      "title": "🔧 Get Image Size"
+    }
+  },
+  "23": {
+    "inputs": {
+      "panel_width": [
+        "22",
+        0
+      ],
+      "panel_height": [
+        "22",
+        1
+      ],
+      "fill_color": "black",
+      "fill_color_hex": "#000000"
+    },
+    "class_type": "CR Color Panel",
+    "_meta": {
+      "title": "🌁 CR Color Panel"
+    }
+  },
+  "26": {
+    "inputs": {
+      "clip_name1": "t5xxl_fp16.safetensors",
+      "clip_name2": "clip_l.safetensors",
+      "type": "flux",
+      "device": "default"
+    },
+    "class_type": "DualCLIPLoader",
+    "_meta": {
+      "title": "DualCLIPLoader"
+    }
+  },
+  "27": {
+    "inputs": {
+      "text": "The Floor-length curtains should hang from a stainless steel curtain rod mounted above the window. Ensure:\n\nTriple pinch pleats at the top with deep, crisp, uniform folds all the way down.\n\nFabric must appear slightly thick, not sheer, with natural drape and realistic depth.\n\nThere should be a small opening in the middle, revealing part of the window.\n\nThe curtain rod must stay fully visible above the pleats and must not intersect or disappear into the fabric.\n\nThe fabric texture should accurately wrap and deform across the pleats and folds, maintaining sharpness and realism.\n\nLighting, shadows, and reflections must match the lighting of the room image.\n\nFinal output should look high-resolution, photorealistic, seamlessly integrated into the real scene."
+    },
+    "class_type": "Text Multiline",
+    "_meta": {
+      "title": "Prompt 1"
+    }
+  },
+  "29": {
+    "inputs": {
+      "delimiter": ", ",
+      "clean_whitespace": "true",
+      "text_a": [
+        "86",
+        0
+      ],
+      "text_b": [
+        "31",
+        0
+      ],
+      "text_c": [
+        "27",
+        0
+      ]
+    },
+    "class_type": "Text Concatenate",
+    "_meta": {
+      "title": "Text Concatenate"
+    }
+  },
+  "31": {
+    "inputs": {
+      "style1": "None",
+      "style2": "None",
+      "style3": "None",
+      "style4": "None"
+    },
+    "class_type": "Prompt Multiple Styles Selector",
+    "_meta": {
+      "title": "Prompt Multiple Styles Selector"
+    }
+  },
+  "33": {
+    "inputs": {
+      "guidance": 30,
+      "conditioning": [
+        "55",
+        0
+      ]
+    },
+    "class_type": "FluxGuidance",
+    "_meta": {
+      "title": "FluxGuidance"
+    }
+  },
+  "34": {
+    "inputs": {
+      "model": [
+        "94",
+        0
+      ],
+      "conditioning": [
+        "33",
+        0
+      ]
+    },
+    "class_type": "BasicGuider",
+    "_meta": {
+      "title": "BasicGuider"
+    }
+  },
+  "40": {
+    "inputs": {
+      "sampler_name": "dpmpp_2m"
+    },
+    "class_type": "KSamplerSelect",
+    "_meta": {
+      "title": "KSamplerSelect"
+    }
+  },
+  "41": {
+    "inputs": {
+      "vae_name": "ae.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "Load VAE"
+    }
+  },
+  "42": {
+    "inputs": {
+      "clip_name": "sglip2-so400m-patch16-512.safetensors"
+    },
+    "class_type": "CLIPVisionLoader",
+    "_meta": {
+      "title": "Load CLIP Vision"
+    }
+  },
+  "44": {
+    "inputs": {
+      "style_model_name": "flux1-redux-dev.safetensors"
+    },
+    "class_type": "StyleModelLoader",
+    "_meta": {
+      "title": "Load Style Model"
+    }
+  },
+  "46": {
+    "inputs": {
+      "direction": "right",
+      "match_image_size": true,
+      "image1": [
+        "23",
+        0
+      ],
+      "image2": [
+        "65",
+        0
+      ]
+    },
+    "class_type": "ImageConcanate",
+    "_meta": {
+      "title": "Image Concatenate"
+    }
+  },
+  "47": {
+    "inputs": {
+      "channel": "red",
+      "image": [
+        "46",
+        0
+      ]
+    },
+    "class_type": "ImageToMask",
+    "_meta": {
+      "title": "Convert Image to Mask"
+    }
+  },
+  "48": {
+    "inputs": {
+      "expand": 8,
+      "incremental_expandrate": 0,
+      "tapered_corners": false,
+      "flip_input": false,
+      "blur_radius": 8,
+      "lerp_alpha": 1,
+      "decay_factor": 1,
+      "fill_holes": false,
+      "mask": [
+        "47",
+        0
+      ]
+    },
+    "class_type": "GrowMaskWithBlur",
+    "_meta": {
+      "title": "Grow Mask With Blur"
+    }
+  },
+  "50": {
+    "inputs": {
+      "images": [
+        "46",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image"
+    }
+  },
+  "52": {
+    "inputs": {
+      "direction": "right",
+      "match_image_size": true,
+      "image1": [
+        "61",
+        0
+      ],
+      "image2": [
+        "279",
+        1
+      ]
+    },
+    "class_type": "ImageConcanate",
+    "_meta": {
+      "title": "Image Concatenate"
+    }
+  },
+  "55": {
+    "inputs": {
+      "noise_mask": true,
+      "positive": [
+        "70",
+        0
+      ],
+      "negative": [
+        "70",
+        0
+      ],
+      "vae": [
+        "41",
+        0
+      ],
+      "pixels": [
+        "52",
+        0
+      ],
+      "mask": [
+        "48",
+        0
+      ]
+    },
+    "class_type": "InpaintModelConditioning",
+    "_meta": {
+      "title": "InpaintModelConditioning"
+    }
+  },
+  "61": {
+    "inputs": {
+      "width": 16384,
+      "height": [
+        "64",
+        1
+      ],
+      "interpolation": "lanczos",
+      "method": "keep proportion",
+      "condition": "always",
+      "multiple_of": 0,
+      "image": [
+        "306",
+        0
+      ]
+    },
+    "class_type": "ImageResize+",
+    "_meta": {
+      "title": "🔧 Image Resize"
+    }
+  },
+  "64": {
+    "inputs": {
+      "image": [
+        "279",
+        1
+      ]
+    },
+    "class_type": "GetImageSize+",
+    "_meta": {
+      "title": "🔧 Get Image Size"
+    }
+  },
+  "65": {
+    "inputs": {
+      "mask": [
+        "279",
+        2
+      ]
+    },
+    "class_type": "MaskToImage",
+    "_meta": {
+      "title": "Convert Mask to Image"
+    }
+  },
+  "70": {
+    "inputs": {
+      "conditioning_to": [
+        "89",
+        0
+      ],
+      "conditioning_from": [
+        "244",
+        0
+      ]
+    },
+    "class_type": "ConditioningConcat",
+    "_meta": {
+      "title": "Conditioning (Concat)"
+    }
+  },
+  "84": {
+    "inputs": {
+      "images": [
+        "52",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image"
+    }
+  },
+  "86": {
+    "inputs": {
+      "text": ""
+    },
+    "class_type": "Text Multiline",
+    "_meta": {
+      "title": "Additional prompt"
+    }
+  },
+  "89": {
+    "inputs": {
+      "text": [
+        "29",
+        0
+      ],
+      "clip": [
+        "26",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+    }
+  },
+  "90": {
+    "inputs": {
+      "crop": "none",
+      "clip_vision": [
+        "42",
+        0
+      ],
+      "image": [
+        "61",
+        0
+      ]
+    },
+    "class_type": "CLIPVisionEncode",
+    "_meta": {
+      "title": "CLIP Vision Encode"
+    }
+  },
+  "93": {
+    "inputs": {
+      "strength": 1,
+      "model": [
+        "282",
+        0
+      ]
+    },
+    "class_type": "DifferentialDiffusion",
+    "_meta": {
+      "title": "Differential Diffusion"
+    }
+  },
+  "94": {
+    "inputs": {
+      "max_shift": 1.15,
+      "base_shift": 0.5,
+      "width": [
+        "97",
+        0
+      ],
+      "height": [
+        "97",
+        1
+      ],
+      "model": [
+        "93",
+        0
+      ]
+    },
+    "class_type": "ModelSamplingFlux",
+    "_meta": {
+      "title": "ModelSamplingFlux"
+    }
+  },
+  "97": {
+    "inputs": {
+      "image": [
+        "52",
+        0
+      ]
+    },
+    "class_type": "GetImageSize+",
+    "_meta": {
+      "title": "🔧 Get Image Size"
+    }
+  },
+  "99": {
+    "inputs": {
+      "width": [
+        "101",
+        0
+      ],
+      "height": [
+        "101",
+        1
+      ],
+      "position": "right-center",
+      "x_offset": 0,
+      "y_offset": 0,
+      "image": [
+        "106",
+        0
+      ]
+    },
+    "class_type": "ImageCrop+",
+    "_meta": {
+      "title": "🔧 Image Crop"
+    }
+  },
+  "100": {
+    "inputs": {
+      "mask": [
+        "48",
+        0
+      ]
+    },
+    "class_type": "MaskToImage",
+    "_meta": {
+      "title": "Convert Mask to Image"
+    }
+  },
+  "101": {
+    "inputs": {
+      "image": [
+        "279",
+        1
+      ]
+    },
+    "class_type": "GetImageSize+",
+    "_meta": {
+      "title": "🔧 Get Image Size"
+    }
+  },
+  "106": {
+    "inputs": {
+      "samples": [
+        "110",
+        0
+      ],
+      "vae": [
+        "41",
+        0
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode"
+    }
+  },
+  "107": {
+    "inputs": {
+      "channel": "red",
+      "image": [
+        "19",
+        0
+      ]
+    },
+    "class_type": "ImageToMask",
+    "_meta": {
+      "title": "Convert Image to Mask"
+    }
+  },
+  "109": {
+    "inputs": {
+      "rgthree_comparer": {
+        "images": [
+          {
+            "name": "A",
+            "selected": true,
+            "url": "/api/view?filename=rgthree.compare._temp_kxidx_00001_.png&type=temp&subfolder=&rand=0.7875123173435223"
+          },
+          {
+            "name": "B",
+            "selected": true,
+            "url": "/api/view?filename=rgthree.compare._temp_kxidx_00002_.png&type=temp&subfolder=&rand=0.5392350464813664"
+          }
+        ]
+      },
+      "image_a": [
+        "120",
+        0
+      ],
+      "image_b": [
+        "18",
+        0
+      ]
+    },
+    "class_type": "Image Comparer (rgthree)",
+    "_meta": {
+      "title": "Image Comparer (rgthree)"
+    }
+  },
+  "110": {
+    "inputs": {
+      "noise": [
+        "116",
+        0
+      ],
+      "guider": [
+        "34",
+        0
+      ],
+      "sampler": [
+        "40",
+        0
+      ],
+      "sigmas": [
+        "129",
+        0
+      ],
+      "latent_image": [
+        "55",
+        2
+      ]
+    },
+    "class_type": "SamplerCustomAdvanced",
+    "_meta": {
+      "title": "SamplerCustomAdvanced"
+    }
+  },
+  "116": {
+    "inputs": {
+      "noise_seed": 219252269781086
+    },
+    "class_type": "RandomNoise",
+    "_meta": {
+      "title": "RandomNoise"
+    }
+  },
+  "120": {
+    "inputs": {
+      "brightness": 1,
+      "contrast": 1,
+      "saturation": 1.6,
+      "image": [
+        "281",
+        0
+      ]
+    },
+    "class_type": "LayerColor: BrightnessContrastV2",
+    "_meta": {
+      "title": "LayerColor: Brightness Contrast V2"
+    }
+  },
+  "123": {
+    "inputs": {
+      "x": 0,
+      "y": 0,
+      "resize_source": false,
+      "destination": [
+        "279",
+        1
+      ],
+      "source": [
+        "99",
+        0
+      ],
+      "mask": [
+        "107",
+        0
+      ]
+    },
+    "class_type": "ImageCompositeMasked",
+    "_meta": {
+      "title": "ImageCompositeMasked"
+    }
+  },
+  "129": {
+    "inputs": {
+      "scheduler": "sgm_uniform",
+      "steps": 20,
+      "denoise": 1,
+      "model": [
+        "94",
+        0
+      ]
+    },
+    "class_type": "BasicScheduler",
+    "_meta": {
+      "title": "BasicScheduler"
+    }
+  },
+  "244": {
+    "inputs": {
+      "image_strength": "lowest",
+      "conditioning": [
+        "89",
+        0
+      ],
+      "style_model": [
+        "44",
+        0
+      ],
+      "clip_vision_output": [
+        "90",
+        0
+      ]
+    },
+    "class_type": "StyleModelApplySimple",
+    "_meta": {
+      "title": "StyleModelApplySimple"
+    }
+  },
+  "250": {
+    "inputs": {
+      "images": [
+        "123",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image"
+    }
+  },
+  "253": {
+    "inputs": {
+      "prompt": "Curatins with rod",
+      "sam_model": "sam_vit_l (1.25GB)",
+      "dino_model": "GroundingDINO_SwinT_OGC (694MB)",
+      "threshold": 0.35,
+      "mask_blur": 0,
+      "mask_offset": 0,
+      "invert_output": false,
+      "background": "Color",
+      "background_color": "#000000",
+      "image": [
+        "305",
+        0
+      ]
+    },
+    "class_type": "SegmentV2",
+    "_meta": {
+      "title": "Segmentation V2 (RMBG)"
+    }
+  },
+  "254": {
+    "inputs": {
+      "downscale_algorithm": "nearest",
+      "upscale_algorithm": "bicubic",
+      "preresize": false,
+      "preresize_mode": "ensure minimum resolution",
+      "preresize_min_width": 1024,
+      "preresize_min_height": 1024,
+      "preresize_max_width": 16384,
+      "preresize_max_height": 16384,
+      "mask_fill_holes": true,
+      "mask_expand_pixels": 0,
+      "mask_invert": false,
+      "mask_blend_pixels": 32,
+      "mask_hipass_filter": 0.1,
+      "extend_for_outpainting": false,
+      "extend_up_factor": 1,
+      "extend_down_factor": 1,
+      "extend_left_factor": 1,
+      "extend_right_factor": 1,
+      "context_from_mask_extend_factor": 1,
+      "output_resize_to_target_size": false,
+      "output_target_width": 512,
+      "output_target_height": 1280,
+      "output_padding": "32",
+      "device_mode": "gpu (much faster)",
+      "image": [
+        "253",
+        0
+      ],
+      "mask": [
+        "253",
+        1
+      ]
+    },
+    "class_type": "InpaintCropImproved",
+    "_meta": {
+      "title": "✂️ Inpaint Crop"
+    }
+  },
+  "279": {
+    "inputs": {
+      "downscale_algorithm": "bicubic",
+      "upscale_algorithm": "bicubic",
+      "preresize": true,
+      "preresize_mode": "ensure minimum and maximum resolution",
+      "preresize_min_width": 1,
+      "preresize_min_height": 1284,
+      "preresize_max_width": 16384,
+      "preresize_max_height": 1284,
+      "mask_fill_holes": true,
+      "mask_expand_pixels": 0,
+      "mask_invert": false,
+      "mask_blend_pixels": 10,
+      "mask_hipass_filter": 0.1,
+      "extend_for_outpainting": false,
+      "extend_up_factor": 1,
+      "extend_down_factor": 1,
+      "extend_left_factor": 1,
+      "extend_right_factor": 1,
+      "context_from_mask_extend_factor": 1,
+      "output_resize_to_target_size": false,
+      "output_target_width": 1280,
+      "output_target_height": 1280,
+      "output_padding": "0",
+      "device_mode": "gpu (much faster)",
+      "image": [
+        "18",
+        0
+      ],
+      "mask": [
+        "304",
+        0
+      ]
+    },
+    "class_type": "InpaintCropImproved",
+    "_meta": {
+      "title": "✂️ Inpaint Crop"
+    }
+  },
+  "281": {
+    "inputs": {
+      "stitcher": [
+        "279",
+        0
+      ],
+      "inpainted_image": [
+        "123",
+        0
+      ]
+    },
+    "class_type": "InpaintStitchImproved",
+    "_meta": {
+      "title": "✂️ Inpaint Stitch"
+    }
+  },
+  "282": {
+    "inputs": {
+      "unet_name": "unet_fp16.safetensors",
+      "weight_dtype": "default"
+    },
+    "class_type": "UNETLoader",
+    "_meta": {
+      "title": "Load Diffusion Model"
+    }
+  },
+  "301": {
+    "inputs": {
+      "images": [
+        "305",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image"
+    }
+  },
+  "302": {
+    "inputs": {
+      "filename_prefix": "ComfyUI",
+      "images": [
+        "120",
+        0
+      ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save final result Image (output)"
+    }
+  },
+  "303": {
+    "inputs": {
+      "image": "curtain_mask.png"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load curtain mask (input)"
+    }
+  },
+  "304": {
+    "inputs": {
+      "channel": "red",
+      "image": [
+        "303",
+        0
+      ]
+    },
+    "class_type": "ImageToMask",
+    "_meta": {
+      "title": "Convert Image to Mask"
+    }
+  },
+  "305": {
+    "inputs": {
+      "anything": [
+        "325",
+        0
+      ]
+    },
+    "class_type": "easy cleanGpuUsed",
+    "_meta": {
+      "title": "Clean VRAM Used"
+    }
+  },
+  "306": {
+    "inputs": {
+      "anything": [
+        "254",
+        1
+      ]
+    },
+    "class_type": "easy cleanGpuUsed",
+    "_meta": {
+      "title": "Clean VRAM Used"
+    }
+  },
+  "310": {
+    "inputs": {
+      "rgthree_comparer": {
+        "images": [
+          {
+            "name": "A",
+            "selected": true,
+            "url": "/api/view?filename=rgthree.compare._temp_ikeru_00001_.png&type=temp&subfolder=&rand=0.8303697201743481"
+          },
+          {
+            "name": "B",
+            "selected": true,
+            "url": "/api/view?filename=rgthree.compare._temp_ikeru_00002_.png&type=temp&subfolder=&rand=0.17752392736717426"
+          }
+        ]
+      },
+      "image_a": [
+        "120",
+        0
+      ],
+      "image_b": [
+        "281",
+        0
+      ]
+    },
+    "class_type": "Image Comparer (rgthree)",
+    "_meta": {
+      "title": "Image Comparer (rgthree)"
+    }
+  },
+  "322": {
+    "inputs": {
+      "image": "fabric_swatch.png"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Fabric Swatch (input)"
+    }
+  },
+  "323": {
+    "inputs": {
+      "enhancement": "clahe",
+      "background_threshold": 10,
+      "return_mask": true,
+      "image": [
+        "322",
+        0
+      ]
+    },
+    "class_type": "BlackBackgroundScanner",
+    "_meta": {
+      "title": "Black Background Scanner"
+    }
+  },
+  "324": {
+    "inputs": {
+      "images": [
+        "326",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image"
+    }
+  },
+  "325": {
+    "inputs": {
+      "blend_file": "file.blend",
+      "width_ratio": [
+        "326",
+        4
+      ],
+      "height_ratio": [
+        "326",
+        5
+      ],
+      "use_gpu": true,
+      "samples": 1,
+      "use_denoising": true,
+      "adaptive_sampling": true,
+      "diffuse_texture": [
+        "326",
+        0
+      ]
+    },
+    "class_type": "BlenderRenderNode",
+    "_meta": {
+      "title": "🎨 Blender Render"
+    }
+  },
+  "326": {
+    "inputs": {
+      "image": [
+        "323",
+        0
+      ]
+    },
+    "class_type": "SeamlessPatternNode",
+    "_meta": {
+      "title": "Seamless Pattern Extractor"
+    }
+  }
+}

@@ -93,12 +93,21 @@ dependencies = [
   "pyopengl>=3.1.10",
   "pyopengl-accelerate>=3.1.10",
   "glfw>=2.10.0",
+
+  #runpod requirements
+  "runpod~=1.7.12",
+  "requests",
+  "websocket-client",  
 ]
 
 [project.urls]
 homepage = "https://www.comfy.org/"
 repository = "https://github.com/comfyanonymous/ComfyUI"
 documentation = "https://docs.comfy.org/"
+
+[[tool.uv.index]]
+name = "pypi"
+url = "https://pypi.org/simple"
 
 # ---- CUDA 12.8 index ----
 [[tool.uv.index]]

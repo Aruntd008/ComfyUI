@@ -594,17 +594,44 @@ def handler(job):
         # Wait for execution completion via WebSocket
         print(f"worker-comfyui - Waiting for workflow execution ({prompt_id})...")
         execution_done = False
+        
+        # --- Progress Tracking State ---
+        percent = 0.0
+        last_emit_time = 0.0
+        
         while True:
             try:
                 out = ws.recv()
                 if isinstance(out, str):
                     message = json.loads(out)
-                    if message.get("type") == "status":
+                    msg_type = message.get("type")
+                    
+                    if msg_type == "status":
                         status_data = message.get("data", {}).get("status", {})
                         print(
                             f"worker-comfyui - Status update: {status_data.get('exec_info', {}).get('queue_remaining', 'N/A')} items remaining in queue"
                         )
-                    elif message.get("type") == "executing":
+                        
+                    elif msg_type == "progress":
+                        data = message.get("data", {})
+                        if data.get("prompt_id") in (None, prompt_id):
+                            value = data.get("value", 0)
+                            maxv = data.get("max", 0) or 0
+                            if maxv > 0:
+                                percent = max(0.0, min(1.0, value / maxv))
+                            
+                            now = time.time()
+                            if now - last_emit_time >= 0.25:
+                                last_emit_time = now
+                                try:
+                                    runpod.serverless.progress_update(
+                                        job,
+                                        {"status": "IN_PROGRESS", "progress": round(percent * 100, 2)}
+                                    )
+                                except Exception as e:
+                                    print(f"worker-comfyui - Error sending progress update: {e}")
+                                    
+                    elif msg_type == "executing":
                         data = message.get("data", {})
                         if (
                             data.get("node") is None
@@ -613,9 +640,16 @@ def handler(job):
                             print(
                                 f"worker-comfyui - Execution finished for prompt {prompt_id}"
                             )
+                            try:
+                                runpod.serverless.progress_update(
+                                    job,
+                                    {"status": "COMPLETED", "progress": 100.0}
+                                )
+                            except Exception:
+                                pass
                             execution_done = True
                             break
-                    elif message.get("type") == "execution_error":
+                    elif msg_type == "execution_error":
                         data = message.get("data", {})
                         if data.get("prompt_id") == prompt_id:
                             error_details = f"Node Type: {data.get('node_type')}, Node ID: {data.get('node_id')}, Message: {data.get('exception_message')}"
@@ -627,7 +661,20 @@ def handler(job):
                 else:
                     continue
             except websocket.WebSocketTimeoutException:
-                print(f"worker-comfyui - Websocket receive timed out. Still waiting...")
+                print(f"worker-comfyui - Websocket receive timed out. Checking history as fallback...")
+                try:
+                    hist = get_history(prompt_id)
+                    item = hist.get(prompt_id) if isinstance(hist, dict) else None
+                    if item and item.get("outputs"):
+                        print(f"worker-comfyui - Execution finished for prompt {prompt_id} (detected via fallback history check)")
+                        try:
+                            runpod.serverless.progress_update(job, {"status": "COMPLETED", "progress": 100.0})
+                        except Exception:
+                            pass
+                        execution_done = True
+                        break
+                except Exception as fallback_err:
+                    print(f"worker-comfyui - Fallback history check failed (non-fatal): {fallback_err}")
                 continue
             except websocket.WebSocketConnectionClosedException as closed_err:
                 try:
