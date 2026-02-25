@@ -60,7 +60,7 @@ EOF
 echo "Launching ComfyUI..."
 : "${COMFY_LOG_LEVEL:=DEBUG}"
 
-python -u /comfyui/main.py \
+/opt/venv/bin/python -u /comfyui/main.py \
     --disable-auto-launch \
     --disable-metadata \
     --listen 0.0.0.0 \
@@ -80,7 +80,7 @@ sleep 5
 echo "Launching RunPod handler..."
 
 if [ "$SERVE_API_LOCALLY" == "true" ]; then
-    python -u /handler.py --rp_serve_api --rp_api_host=0.0.0.0
+    /opt/venv/bin/python -u /handler.py --rp_serve_api --rp_api_host=0.0.0.0
 else
-    python -u /handler.py
+    /opt/venv/bin/python -u /handler.py
 fi
