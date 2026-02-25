@@ -93,11 +93,10 @@ dependencies = [
   "pyopengl>=3.1.10",
   "pyopengl-accelerate>=3.1.10",
   "glfw>=2.10.0",
-
   #runpod requirements
   "runpod~=1.7.12",
   "requests",
-  "websocket-client",  
+  "websocket-client",
 ]
 
 [project.urls]
