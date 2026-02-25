@@ -1,0 +1,24 @@
+name: RunPod Worker Test
+
+on:
+  workflow_dispatch:   # manual trigger
+  push:
+    branches: [ serverless ]
+
+jobs:
+  test-runpod-worker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # No docker build step (you already pushed image)
+
+      - name: Run RunPod Tests
+        uses: runpod/runpod-test-runner@v1
+        with:
+          image-tag: aruntd008/comfyui-serverless:v1.0.0
+          runpod-api-key: ${{ secrets.RUNPOD_API_KEY }}
+          test-filename: .github/tests.json
+          request-timeout: 900
