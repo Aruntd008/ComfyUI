@@ -2,11 +2,11 @@
     {
         "hardwareConfig": {
             "endpointConfig": {
-                "gpuIds": "AMPERE_16",
-                "name": "16GB GPU"
+                "gpuIds": "NVIDIA GeForce RTX 5090",
+                "name": "test"
             },
             "templateConfig": {
-                "name": "16GB GPU"
+                "name": "test"
             }
         },
         "input": {
