@@ -16,7 +16,7 @@ jobs:
       # No docker build step (you already pushed image)
 
       - name: Run RunPod Tests
-        uses: runpod/runpod-test-runner@v1
+        uses: runpod/runpod-test-runner@v2.1.0
         with:
           image-tag: aruntd008/comfyui-serverless:v1.0.0
           runpod-api-key: ${{ secrets.RUNPOD_API_KEY }}
