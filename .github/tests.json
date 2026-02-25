@@ -2,11 +2,11 @@
     {
         "hardwareConfig": {
             "endpointConfig": {
-                "gpuIds": "NVIDIA_GeForce_RTX_5090",
-                "name": "test"
+                "gpuIds": "NVIDIA GeForce RTX 5090",
+                "name": "RTX 5090"
             },
             "templateConfig": {
-                "name": "test"
+                "name": "RTX 5090 template"
             }
         },
         "input": {
