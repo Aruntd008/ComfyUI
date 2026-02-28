@@ -564,6 +564,7 @@ def handler(job):
         print(f"worker-comfyui - Connecting to websocket: {ws_url}")
         ws = websocket.WebSocket()
         ws.connect(ws_url, timeout=10)
+        ws.settimeout(60)  # 60s recv timeout — covers FLUX model loading / inference silent gaps
         print(f"worker-comfyui - Websocket connected")
 
         # Queue the workflow

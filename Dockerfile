@@ -6,74 +6,44 @@ FROM nvidia/cuda:12.8.0-runtime-ubuntu22.04 AS builder
 ENV DEBIAN_FRONTEND=noninteractive \
     PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
-    PATH="/root/.local/bin:/opt/venv/bin:${PATH}"
+    PATH="/root/.local/bin:/opt/venv/bin:${PATH}" \
+    UV_PROJECT_ENVIRONMENT="/opt/venv"
 
-# Build-only deps (won't appear in final image)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     python3.11 python3.11-venv python3.11-dev \
     git curl build-essential cmake ca-certificates \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/*
 
+# Install uv
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh
-RUN uv venv /opt/venv
+
+# Create venv
+RUN uv venv --python python3.11 /opt/venv
 
 WORKDIR /comfyui
 
-# Cache dependency install layer separately from source code
+# ---- Dependency cache layer ----
 COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen --no-install-project
 
-COPY . /comfyui/
+# ---- Copy source after deps ----
+COPY . .
 RUN uv sync --frozen
 
 
 # ============================================================
-# Stage 2: Model Downloader — parallel downloads, own cache layer
+# Stage 2: Blender Download (isolated for caching)
 # ============================================================
-FROM ubuntu:22.04 AS model-downloader
+FROM ubuntu:22.04 AS blender
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    wget ca-certificates \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
-
-WORKDIR /models
-
-RUN mkdir -p clip diffusion_models vae clip_vision style_models SAM grounding-dino
-
-# Each model is its own layer — only re-downloads when URL changes
-# FLUX Text Encoders
-RUN wget -q --show-progress -O clip/t5xxl_fp16.safetensors \
-    "https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp16.safetensors"
-
-RUN wget -q --show-progress -O clip/clip_l.safetensors \
-    "https://huggingface.co/camenduru/FLUX.1-dev/resolve/main/clip_l.safetensors"
-
-# FLUX UNet
-RUN wget -q --show-progress -O diffusion_models/unet_fp16.safetensors \
-    "https://huggingface.co/yichengup/flux.1-fill-dev-OneReward/resolve/main/unet_fp16.safetensors"
-
-# VAE
-RUN wget -q --show-progress -O vae/ae.safetensors \
-    "https://huggingface.co/camenduru/FLUX.1-dev/resolve/d616d290809ffe206732ac4665a9ddcdfb839743/ae.safetensors"
-
-# CLIP Vision
-RUN wget -q --show-progress -O clip_vision/sglip2-so400m-patch16-512.safetensors \
-    "https://huggingface.co/google/siglip2-so400m-patch16-512/resolve/main/model.safetensors"
-
-# Style Model
-RUN wget -q --show-progress -O style_models/flux1-redux-dev.safetensors \
-    "https://huggingface.co/camenduru/FLUX.1-dev/resolve/d616d290809ffe206732ac4665a9ddcdfb839743/flux1-redux-dev.safetensors"
-
-# SAM
-RUN wget -q --show-progress -O SAM/sam_vit_l.pth \
-    "https://huggingface.co/1038lab/sam/resolve/main/sam_vit_l.pth"
-
-# GroundingDINO
-RUN wget -q --show-progress -O grounding-dino/GroundingDINO_SwinT_OGC.cfg.py \
-    "https://huggingface.co/1038lab/GroundingDINO/resolve/main/GroundingDINO_SwinT_OGC.cfg.py"
-
-RUN wget -q --show-progress -O grounding-dino/groundingdino_swint_ogc.pth \
-    "https://huggingface.co/1038lab/GroundingDINO/resolve/main/groundingdino_swint_ogc.pth"
+    ca-certificates aria2 xz-utils \
+    && aria2c -x 16 -s 16 \
+    https://mirror.freedif.org/blender/release/Blender5.0/blender-5.0.1-linux-x64.tar.xz \
+    && tar xf blender-5.0.1-linux-x64.tar.xz \
+    && mv blender-5.0.1-linux-x64 /blender \
+    && rm blender-5.0.1-linux-x64.tar.xz \
+    && rm -rf /var/lib/apt/lists/*
 
 
 # ============================================================
@@ -84,29 +54,65 @@ FROM nvidia/cuda:12.8.0-runtime-ubuntu22.04 AS runtime
 ENV DEBIAN_FRONTEND=noninteractive \
     PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
-    PATH="/opt/venv/bin:${PATH}" \
-    MODEL_DIR=/comfyui/models \
+    PATH="/opt/venv/bin:/opt/blender:${PATH}" \
+    # ---- change this if you want to use a different directory for models ----
+    MODEL_DIR=/runpod-volume/models \
     COMFYUI_PORT=8188
 
-# Runtime-only system deps — no dev headers, no build tools
 RUN apt-get update && apt-get install -y --no-install-recommends \
     python3.11 \
-    libgl1 libglib2.0-0 libsm6 libxext6 libxrender1 \
-    ffmpeg libgoogle-perftools4 ca-certificates curl \
-    && apt-get autoremove -y && apt-get clean \
+    git \
+    # ---- Core GL / EGL / DRM stack ----
+    libgl1 \
+    libgl1-mesa-dri \
+    libegl1 \
+    libglu1-mesa \
+    libdrm2 \
+    libgbm1 \
+    # ---- X11 stack ----
+    libx11-6 \
+    libxrender1 \
+    libxi6 \
+    libxxf86vm1 \
+    libxfixes3 \
+    libxext6 \
+    libxrandr2 \
+    libxcursor1 \
+    libxinerama1 \
+    libxkbcommon-x11-0 \
+    libsm6 \
+    # ---- Vulkan ----
+    mesa-vulkan-drivers \
+    mesa-utils \
+    # ---- Misc ----
+    libglib2.0-0 \
+    ffmpeg \
+    curl \
+    ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy venv from builder (no pip/uv needed at runtime)
+# ---- Copy Blender from isolated stage ----
+COPY --from=blender /blender /opt/blender
+
+# ──── Critical fixes: make blender discoverable everywhere ────
+RUN chmod +x /opt/blender/blender && \
+    chmod -R 755 /opt/blender && \
+    ln -sf /opt/blender/blender /usr/local/bin/blender && \
+    ln -sf /opt/blender/blender /usr/bin/blender && \
+    ln -sf /opt/blender/blender /bin/blender && \
+    echo "Blender symlinks created" && \
+    /usr/bin/blender --version || echo "Blender version check failed during build"
+
+# ---- Copy Python env ----
 COPY --from=builder /opt/venv /opt/venv
 
-# Copy app source from builder
+# ---- Copy App ----
 COPY --from=builder /comfyui /comfyui
 
-# Copy models from model-downloader stage
-COPY --from=model-downloader /models /comfyui/models
-
 WORKDIR /
+
 COPY handler.py /handler.py
+COPY network_volume.py /network_volume.py
 COPY start.sh /start.sh
 RUN chmod +x /start.sh
 

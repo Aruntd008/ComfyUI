@@ -75,7 +75,7 @@
   },
   "27": {
     "inputs": {
-      "text": "The Floor-length curtains should hang from a stainless steel curtain rod mounted above the window. Ensure:\n\nTriple pinch pleats at the top with deep, crisp, uniform folds all the way down.\n\nFabric must appear slightly thick, not sheer, with natural drape and realistic depth.\n\nThere should be a small opening in the middle, revealing part of the window.\n\nThe curtain rod must stay fully visible above the pleats and must not intersect or disappear into the fabric.\n\nThe fabric texture should accurately wrap and deform across the pleats and folds, maintaining sharpness and realism.\n\nLighting, shadows, and reflections must match the lighting of the room image.\n\nFinal output should look high-resolution, photorealistic, seamlessly integrated into the real scene."
+      "text": "ultra-realistic, floor-length curtains hanging from a stainless-steel curtain rod mounted above the window.\nRender them with deep, pronounced, sharp triple-pinch pleats at the top, continuing into strong, well-defined vertical folds all the way down. Folds should have realistic depth, shadowing, and thickness, not flat or shallow.\n\nCurtain Requirements:\n\nUse thick, medium-weight fabric (not sheer) deep folds.\n\nEnsure natural drape, volume, and weight, with shadows falling consistently according to the room’s lighting.\n\nThe fabric texture must accurately wrap and deform across all pleats and folds — no stretching, overlapping, or blurring.\n\nInclude a slight opening in the center to reveal part of the window behind.\n\nThe stainless-steel curtain rod must remain fully visible above the pleats, without intersecting or blending into the fabric.\n\nRealism / Integration Requirements:\n\nMatch lighting, color temperature, reflections, and shadows precisely to the room environment.\n\nEnsure the curtains look seamlessly integrated, photorealistic, and high resolution.\n\nPreserve accurate perspective and material specularity according to the real scene.\n\nAvoid any artifacts: no texture tiling, no blurry edges, no geometry warping.\n\nFinal Output:\n\nProduce a high-resolution, photorealistic image with realistic fabric thickness, deep folds, sharp pleat structure, and correct lighting consistent with a real room."
     },
     "class_type": "Text Multiline",
     "_meta": {
@@ -536,12 +536,12 @@
           {
             "name": "A",
             "selected": true,
-            "url": "/api/view?filename=rgthree.compare._temp_kxidx_00001_.png&type=temp&subfolder=&rand=0.7875123173435223"
+            "url": "/api/view?filename=rgthree.compare._temp_ppjcn_00003_.png&type=temp&subfolder=&rand=0.5127203155303747"
           },
           {
             "name": "B",
             "selected": true,
-            "url": "/api/view?filename=rgthree.compare._temp_kxidx_00002_.png&type=temp&subfolder=&rand=0.5392350464813664"
+            "url": "/api/view?filename=rgthree.compare._temp_ppjcn_00004_.png&type=temp&subfolder=&rand=0.9702819504799748"
           }
         ]
       },
@@ -589,7 +589,7 @@
   },
   "116": {
     "inputs": {
-      "noise_seed": 219252269781086
+      "noise_seed": 803887825341844
     },
     "class_type": "RandomNoise",
     "_meta": {
@@ -887,12 +887,12 @@
           {
             "name": "A",
             "selected": true,
-            "url": "/api/view?filename=rgthree.compare._temp_ikeru_00001_.png&type=temp&subfolder=&rand=0.8303697201743481"
+            "url": "/api/view?filename=rgthree.compare._temp_ovvmx_00003_.png&type=temp&subfolder=&rand=0.10065989738777814"
           },
           {
             "name": "B",
             "selected": true,
-            "url": "/api/view?filename=rgthree.compare._temp_ikeru_00002_.png&type=temp&subfolder=&rand=0.17752392736717426"
+            "url": "/api/view?filename=rgthree.compare._temp_ovvmx_00004_.png&type=temp&subfolder=&rand=0.4522824651063071"
           }
         ]
       },
@@ -958,7 +958,8 @@
         5
       ],
       "use_gpu": true,
-      "samples": 1,
+      "gpu_backend": "AUTO",
+      "samples": true,
       "use_denoising": true,
       "adaptive_sampling": true,
       "diffuse_texture": [

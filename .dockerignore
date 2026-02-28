@@ -18,10 +18,10 @@ venv*/
 # -------------------------------------------------
 # Runtime directories (DO NOT BAKE INTO IMAGE)
 # -------------------------------------------------
-output/
-input/
-models/
-temp/
+output/*
+input/*
+models/*
+temp/*
 
 # -------------------------------------------------
 # Logs

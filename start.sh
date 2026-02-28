@@ -25,7 +25,7 @@ comfy-manager-set-mode offline || echo "worker-comfyui - Could not set ComfyUI-M
 : "${MODEL_DIR:=/runpod-volume/models}"
 : "${COMFYUI_PORT:=8188}"
 
-mkdir -p "${MODEL_DIR}"
+mkdir -p "${MODEL_DIR}/custom_nodes"
 echo "Models mounted at: ${MODEL_DIR}"
 
 # ComfyUI dynamically loads extra models using an extra_model_paths.yaml config file
@@ -52,35 +52,26 @@ runpod_volume:
     facelandmark: facelandmark
     pulid: pulid
     insightface: insightface
+    diffusion_models: diffusion_models
+    grounding-dino: grounding-dino
+    SAM: SAM
 EOF
 
 # ------------------------------------------------------------
-# Start ComfyUI (Background)
+# Start ComfyUI and RunPod Handler
 # ------------------------------------------------------------
-echo "Launching ComfyUI..."
+echo "worker-comfyui: Starting ComfyUI"
 : "${COMFY_LOG_LEVEL:=DEBUG}"
 
-/opt/venv/bin/python -u /comfyui/main.py \
-    --disable-auto-launch \
-    --disable-metadata \
-    --listen 0.0.0.0 \
-    --port ${COMFYUI_PORT} \
-    --verbose "${COMFY_LOG_LEVEL}" \
-    --log-stdout &
+# Serve the API and don't shutdown the container
+if [ "${SERVE_API_LOCALLY:=false}" = "true" ]; then
+    PYTHONUNBUFFERED=1 /opt/venv/bin/python -u /comfyui/main.py --disable-auto-launch --disable-metadata --listen 0.0.0.0 --port ${COMFYUI_PORT} --verbose "${COMFY_LOG_LEVEL}" --log-stdout &
 
-COMFY_PID=$!
-echo "ComfyUI started with PID ${COMFY_PID}"
-
-# Small wait to ensure ComfyUI is ready
-sleep 5
-
-# ------------------------------------------------------------
-# Start RunPod Handler (Foreground)
-# ------------------------------------------------------------
-echo "Launching RunPod handler..."
-
-if [ "$SERVE_API_LOCALLY" == "true" ]; then
-    /opt/venv/bin/python -u /handler.py --rp_serve_api --rp_api_host=0.0.0.0
+    echo "worker-comfyui: Starting RunPod Handler"
+    PYTHONUNBUFFERED=1 /opt/venv/bin/python -u /handler.py --rp_serve_api --rp_api_host=0.0.0.0
 else
-    /opt/venv/bin/python -u /handler.py
+    PYTHONUNBUFFERED=1 /opt/venv/bin/python -u /comfyui/main.py --disable-auto-launch --disable-metadata --port ${COMFYUI_PORT} --verbose "${COMFY_LOG_LEVEL}" --log-stdout &
+
+    echo "worker-comfyui: Starting RunPod Handler"
+    PYTHONUNBUFFERED=1 /opt/venv/bin/python -u /handler.py
 fi
