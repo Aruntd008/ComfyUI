@@ -20,7 +20,9 @@ venv*/
 # -------------------------------------------------
 output/*
 input/*
-models/*
+models/diffusion_models/unet_fp8.safetensors
+models/clip/t5xxl_fp8_e4m3fn_scaled.safetensors
+models/SAM/sam_vit_h.pth
 temp/*
 
 # -------------------------------------------------

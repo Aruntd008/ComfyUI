@@ -3,6 +3,7 @@
 # Default values
 IMAGE_NAME="comfyui-runpod"
 IMAGE_TAG="latest"
+DOCKERFILE="Dockerfile"
 PUSH=false
 NO_CACHE=false
 PLATFORM=""
@@ -15,14 +16,16 @@ show_help() {
     echo "Options:"
     echo "  -n, --name         Set the image name (default: comfyui-runpod)"
     echo "  -t, --tag          Set the image tag (default: latest)"
+    echo "  -f, --file         Set the Dockerfile to use (default: Dockerfile)"
     echo "  -p, --push         Push the image to registry after building"
     echo "  --platform <arch>  Set the target platform (e.g., linux/amd64)"
     echo "  --no-cache         Build without using any cache"
     echo "  --build-arg <arg>  Pass a build argument to Docker (e.g., --build-arg HTTP_PROXY=...)"
     echo "  -h, --help         Show this help message"
     echo ""
-    echo "Example:"
+    echo "Examples:"
     echo "  ./build.sh --name arun/comfyui --tag v1.0.0 --push"
+    echo "  ./build.sh -f Dockerfile.models --name arun/comfyui-baked --tag latest --platform linux/amd64 --push"
 }
 
 # Parse command line options
@@ -30,6 +33,7 @@ while [[ "$#" -gt 0 ]]; do
     case $1 in
         -n|--name) IMAGE_NAME="$2"; shift ;;
         -t|--tag) IMAGE_TAG="$2"; shift ;;
+        -f|--file) DOCKERFILE="$2"; shift ;;
         -p|--push) PUSH=true ;;
         --platform) PLATFORM="$2"; shift ;;
         --no-cache) NO_CACHE=true ;;
@@ -43,8 +47,9 @@ done
 FULL_IMAGE_NAME="${IMAGE_NAME}:${IMAGE_TAG}"
 
 echo "🔨 Building Docker image: ${FULL_IMAGE_NAME}"
+echo "📄 Using Dockerfile: ${DOCKERFILE}"
 
-BUILD_CMD="docker build -t ${FULL_IMAGE_NAME}"
+BUILD_CMD="docker build -f ${DOCKERFILE} -t ${FULL_IMAGE_NAME}"
 
 if [ "$NO_CACHE" = true ]; then
     echo "🚫 Building without cache"
